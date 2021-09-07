@@ -4,9 +4,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import javax.xml.xpath.XPath;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class UITests {
@@ -19,39 +22,56 @@ public class UITests {
     //RestAssured
 
     @Test
-    void userNameIsCorrectOnOverviewTab(){
+    void userNameIsCorrectOnOverviewTab() {
         //Arrange
-        System.setProperty("webdriver.chrome.driver","C:\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions().addArguments("start-fullscreen");
         WebDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String user = "cherepanovadr";
-        driver.get("https://github.com/"+user);
+        driver.get("https://github.com/" + user);
         //Act
         String actualUserName = driver.findElement(By.className("p-nickname")).getText();
 
         //Assert
-        Assertions.assertEquals(user,actualUserName);
+        Assertions.assertEquals(user, actualUserName);
 
         driver.close();
     }
+
     @Test
-    void repoLinkGoesToCorrectRepo(){
+    void repoLinkGoesToCorrectRepo() {
         //Arrange
-        System.setProperty("webdriver.chrome.driver","C:\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions().addArguments("start-fullscreen");
 
         WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 
         String user = "cherepanovadr";
-        driver.get("https://github.com/"+user);
+        driver.get("https://github.com/" + user);
 
-        String actualUserName = driver.findElement(By.className("p-nickname")).getText();
+        String repo = "APIandUITestAutomation";
+        WebElement repoLink = driver.findElement(By.linkText(repo));
+        repoLink.click();
+        String actualUrl = driver.getCurrentUrl();
 
         //Assert
-        Assertions.assertEquals(user,actualUserName);
+        Assertions.assertEquals("https://github.com/cherepanovadr/" + repo, actualUrl);
+        driver.close();
+    }
+    @Test
+    void repositoryCountIsCorrect() {
+        //Arrange
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions().addArguments("start-fullscreen");
+        WebDriver driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 
+        driver.get("https://github.com/cherepanovadr?tab=repositories");
+        List<WebElement> repos = driver.findElements(By.xpath("//div[@id='user-repositories-list']//li"));
+
+        Assertions.assertEquals(7 , repos.size());
         driver.close();
     }
 
