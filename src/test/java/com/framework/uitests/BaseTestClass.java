@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.uitests;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +19,6 @@ public class BaseTestClass {
     static void setup() {
         driver = getChromeDriver();
     }
-
 
     @AfterAll
     static void cleanup() {
