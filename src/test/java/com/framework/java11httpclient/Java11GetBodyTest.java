@@ -1,5 +1,8 @@
 package com.framework.java11httpclient;
 
+import com.testframework.entitites.User;
+import com.testframework.handlers.JsonBodyHandler;
+import jakarta.json.bind.JsonbBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,17 +14,32 @@ import java.net.http.HttpResponse;
 
 public class Java11GetBodyTest {
     private static final String BASE_URL = "https://api.github.com/";
-    static HttpResponse<Void> response;
+    static HttpResponse<String> response;
 
     @Test
-    void postWithoutAuthorizationFails() throws IOException, InterruptedException {
+    void bodyContainsCurrentUserUrl_StringParsing() throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
-        HttpRequest post = HttpRequest.newBuilder(URI.create(BASE_URL + "user/repos"))
-                .POST(HttpRequest.BodyPublishers.noBody())
+        HttpRequest get = HttpRequest.newBuilder(URI.create(BASE_URL + "users/cherepanovadr"))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
                 .build();
-        response = httpClient.send(post, HttpResponse.BodyHandlers.discarding());
-        int actualStatus = response.statusCode();
-        Assertions.assertEquals(401, actualStatus);
+        response = httpClient.send(get, HttpResponse.BodyHandlers.ofString());
+        String body = response.body();
+        Assertions.assertTrue(body.contains("\"login\":\"cherepanovadr\""));
     }
 
+    @Test
+    void bodyContainsCurrentUserUrl_ObjectMapping() throws IOException, InterruptedException {
+
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest get = HttpRequest.newBuilder(URI.create(BASE_URL + "users/cherepanovadr"))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .build();
+        HttpResponse<User> responseUser = httpClient.send(get, JsonBodyHandler.jsonBodyHandler(User.class));
+        String actualLogin = responseUser.body().getLogin();
+        Assertions.assertEquals("cherepanovadr", actualLogin);
+    }
+
+
 }
+
+
