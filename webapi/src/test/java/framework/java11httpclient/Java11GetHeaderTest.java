@@ -1,4 +1,4 @@
-package com.framework.java11httpclient;
+package framework.java11httpclient;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,4 +1,4 @@
-package com.testframework.entitites;
+package testframework.entitites;
 
 import java.util.HashMap;
 import java.util.Map;

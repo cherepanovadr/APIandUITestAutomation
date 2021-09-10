@@ -1,10 +1,9 @@
-package com.framework.java11httpclient;
+package framework.java11httpclient;
 
-import com.testframework.entitites.User;
-import com.testframework.handlers.JsonBodyHandler;
-import jakarta.json.bind.JsonbBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import testframework.entitites.User;
+import testframework.handlers.JsonBodyHandler;
 
 import java.io.IOException;
 import java.net.URI;

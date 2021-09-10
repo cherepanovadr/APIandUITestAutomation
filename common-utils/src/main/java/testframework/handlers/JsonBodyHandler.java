@@ -1,4 +1,4 @@
-package com.testframework.handlers;
+package testframework.handlers;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
